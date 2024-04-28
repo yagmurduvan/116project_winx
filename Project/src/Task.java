@@ -1,3 +1,4 @@
+package Project.src;
 public class Task {
     private String type;
     private int size;
