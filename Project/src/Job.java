@@ -1,4 +1,4 @@
-
+package Project.src;
 import java.util.ArrayList;
 public class Job {
     private String jobID;

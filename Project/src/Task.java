@@ -1,13 +1,17 @@
+
+package Project.src;
 public class Task {
     private String type;
     private int size;
-    //private int typeID;
 
     public Task(String type, int size) {
-        super();
         this.type = type;
         this.size = size;
 
+    }
+    public Task (String type) {
+        this.type=type;
+        this.size=1;
     }
     public String getType() {
         return type;
@@ -20,6 +24,10 @@ public class Task {
     }
     public void setSize(int size) {
         this.size = size;
+    }
+    @Override
+    public String toString() {
+        return "Task [" + (type != null ? "type=" + type + ", " : "") + "size=" + size + "]";
     }
 
 }
