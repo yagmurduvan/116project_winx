@@ -13,15 +13,14 @@ public class Main {
             return;
         }
 
-        String file1Name = files[0];
-        String file2Name = files[1];
+        String workflow = files[0];
+        String jobfile = files[1];
 
-        Task.taskMaker(file1Name);
+        Reader.taskMaker(workflow);//read workflow , make task object and add task arraylist
+        Reader.jobFileReader(jobfile);//read jobfile make job object and addd job arraylist
+        Reader.jobgrouper(workflow);
+        Reader.stationReader(workflow);
+        Reader.maketasklist();
+
     }
 }
-
-
-
-
-
-
