@@ -264,4 +264,186 @@ public class Reader {
             }
         }
     }
+    public static void controller(String[] array2) {
+        int index_job = 0;
+        int index_task = 0;
+        String element = null;
+        double original_size = 0;
+        int i = 0;
+        try{
+            while (index_job < jobs.size()) {
+                if (isInteger2(array2[i]) && Integer.parseInt(array2[i]) < 0) {
+                    throw new IllegalArgumentException("Size cannot be negative.");
+                }
+
+                if (isDouble(array2[i]) && Double.parseDouble(array2[i]) < 0) {
+                    throw new IllegalArgumentException("Size cannot be negative.");
+                }
+
+                if (array2[i].contains("))")) {
+                    break;
+                }
+
+                if (array2[i].equals(jobs.get(index_job).getJobTypeID())) {
+                    i++;
+                    while (index_task < tasks.size()) {
+                        String type;
+                        String type2;
+                        type = array2[i].replace(")", "");
+                        type2 = array2[i].replace("))", "");
+                        if (array2[i].equals(tasks.get(index_task).getType())) {
+                            i++;
+                            if (isInteger(array2[i])) {
+                                if (tasks.get(index_task).getSize() == 0) {
+                                    String task = tasks.get(index_task).getType();
+                                    Task t = new Task(task, Integer.parseInt(array2[i]));
+                                    jobs.get(index_job).addTask(t);
+                                    tasks_special.add(t);
+                                    index_task = 0;
+                                } else {
+                                    String task = tasks.get(index_task).getType();
+                                    Task t = new Task(task, Integer.parseInt(array2[i]));
+                                    jobs.get(index_job).addTask(t);
+                                    tasks_special.add(t);
+                                    index_task = 0;
+                                }
+                            } else if (array2[i].contains(")")) {
+                                element = array2[i].replace(")", "");
+                                if (isInteger(element)) {
+                                    if (tasks.get(index_task).getSize() == 0) {
+                                        String task = tasks.get(index_task).getType();
+                                        Task t = new Task(task, Integer.parseInt(element));
+                                        jobs.get(index_job).addTask(t);
+                                        tasks_special.add(t);
+                                        index_task = 0;
+                                    } else {
+                                        String task = tasks.get(index_task).getType();
+                                        Task t = new Task(task, Integer.parseInt(element));
+                                        jobs.get(index_job).addTask(t);
+                                        tasks_special.add(t);
+                                        index_task = 0;
+                                    }
+                                }
+                                index_job = 0;
+                                i++;
+                                break;
+                            } else if (array2[i].contains("))")) {
+                                element = array2[i].replace("))", "");
+                                if (isInteger(element)) {
+                                    String task = tasks.get(index_task).getType();
+                                    Task t = new Task(task, Integer.parseInt(element));
+                                    jobs.get(index_job).addTask(t);
+                                    tasks_special.add(t);
+                                    index_task = 0;
+                                } else {
+                                    String task = tasks.get(index_task).getType();
+                                    Task t = new Task(task, Integer.parseInt(element));
+                                    tasks.get(index_task).setSize(Integer.parseInt(element));
+                                    jobs.get(index_job).addTask(t);
+                                    tasks_special.add(t);
+                                    index_task = 0;
+                                }
+                                index_job = 0;
+                                break;
+                            } else {
+                                if (tasks.get(index_task).getSize() == 0) {
+                                    String taskType = tasks.get(index_task).getType();
+                                    jobs.get(index_job).addTask(tasks.get(index_task));
+                                    tasks_special.add(tasks.get(index_task));
+                                    index_task = 0;
+                                    i--;
+                                    throw new Exception("Size of the task is not set. -> "+ taskType);
+                                } else {
+                                    double size = tasks.get(index_task).getSize();
+                                    original_size = size;
+                                    String task = tasks.get(index_task).getType();
+                                    Task t = new Task(task, original_size);
+                                    jobs.get(index_job).addTask(t);
+                                    tasks_special.add(t);
+                                    index_task = 0;
+                                    i--;
+                                }
+                            }
+
+                            i++;
+                        } else if (type.equals(tasks.get(index_task).getType()) || type2.equals(tasks.get(index_task).getType())) {
+                            if (tasks.get(index_task).getSize() == 0) {
+                                String task = tasks.get(index_task).getType();
+                                Task t = new Task(task, Integer.parseInt(element));
+                                jobs.get(index_job).addTask(t);
+                                tasks_special.add(t);
+                                index_task = 0;
+                            } else {
+                                String task = tasks.get(index_task).getType();
+                                Task t = new Task(task, tasks.get(index_task).getSize());
+                                jobs.get(index_job).addTask(t);
+                                tasks_special.add(t);
+                                index_task = 0;
+                            }
+                            i++;
+                            index_job = 0;
+                            break;
+                        } else {
+                            index_task++;
+                        }
+                    }
+                } else {
+                    index_job++;
+                }
+                if (i == array2.length) {
+                    i--;
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return; // If an exception is thrown, return and do not execute the rest of the code
+        }
+        System.out.println("");
+        System.out.println("For each job was assigned each tasks , here is the job's last situations");
+        for (Job j : jobs) {
+            j.printTasklist();
+        }
+    }
+
+    public static void jobgrouper(String filePath) {
+        String[] array2;
+        ArrayList<String> tempArray = new ArrayList<>();
+        Scanner reader = null;
+        boolean readJobTypes = false;
+        String line;
+        try {
+            reader = new Scanner(Paths.get(filePath));
+            while (reader.hasNext()) {
+                line = reader.nextLine();
+
+                if (line.trim().startsWith("(")) {
+                    if (line.contains("(JOBTYPES")) {
+                        readJobTypes = true;
+                        continue;
+                    } else if (line.contains("(STATIONS")) {
+                        break;
+                    }
+                }
+
+                if (readJobTypes) {
+                    line = line.replace("(", "").trim();
+                    String[] tokens = line.split(" ");
+                    tempArray.addAll(Arrays.asList(tokens));
+                }
+            }
+            array2 = new String[tempArray.size()];
+            tempArray.toArray(array2);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+        controller(array2);
+    }
+
 }
