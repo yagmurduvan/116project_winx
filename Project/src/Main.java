@@ -22,6 +22,12 @@ public class Main {
             Reader.taskMaker(workflow); //read workflow , make task object and add task arraylist
             Reader.jobFileReader(jobfile); //read jobfile make job object and addd job arraylist
             Reader.jobgrouper(workflow);
+            Reader.stationReader(workflow);
+            Reader.definespeed();
+            Reader.durationCalculater();
+            Reader.remainingTasks();
+            Reader.totalDuration();
+
         }
     }
 }

@@ -67,8 +67,4 @@ public class Job {
     public void addTask(Task tasks) {
         tasklist.add(tasks);
     }
-
-
-
 }
-
