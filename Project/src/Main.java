@@ -27,7 +27,6 @@ public class Main {
             Reader.durationCalculater();
             Reader.remainingTasks();
             Reader.totalDuration();
-
         }
     }
 }

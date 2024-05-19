@@ -13,19 +13,19 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Reader {
-    public static boolean formaterror = false;
+    public static boolean formaterror=false;
 
-    static ArrayList<Task> tasks_special = new ArrayList<Task>();
+    static ArrayList<Task> tasks_special=new ArrayList<Task>() ;
 
-    static ArrayList<Task> tasks = new ArrayList<Task>();
+    static ArrayList<Task> tasks=new ArrayList<Task>() ;
 
-    static ArrayList<Job> jobs = new ArrayList<>();
+    static ArrayList<Job> jobs=new ArrayList<>();
 
     static ArrayList<Station> stations = new ArrayList<>();
 
     static ArrayList<Double> minimum = new ArrayList<>();
 
-    static ArrayList<Task> remaining = new ArrayList<>();
+    static ArrayList <Task> remaining =new ArrayList<>();
 
     public static boolean isInteger(String str) {
         try {
@@ -109,51 +109,52 @@ public class Reader {
 
     public static void taskMaker(String file1Name) {//declare the task
         ArrayList<String> readers = new ArrayList<String>();
-        readFileForTask(file1Name, readers);
-        boolean isFinished = true;
-        for (int i = 1; i < readers.size(); i++) {
-            while (isFinished && !isInteger(readers.get(i))) {
+        readFileForTask(file1Name,readers);
+        boolean isFinished=true;
+        for(int i=1;i<readers.size();i++) {
+            while(isFinished&&!isInteger(readers.get(i))) {
                 ArrayList<String> taskInfos = new ArrayList<>();
                 taskInfos.add(readers.get(i));
-                int index = i;
+                int index=i;
 
-                while (true) {
+                while(true) {
                     String type = "";
-                    if (index == readers.size() - 1) {
+                    if(index==readers.size()-1) {
 
                         System.out.println("last object was created");
-                        if (readers.get(index).contains(")")) {
-                            type = readers.get(index).replace(")", "");
+                        if(readers.get(index).contains(")")) {
+                            type=readers.get(index).replace(")","");
                         }
 
-                        if (!isInteger(type)) {
-                            Task t = null;
-                            t = new Task(type);
+                        if(!isInteger(type)) {
+                            Task t=null;
+                            t=new Task(type);
                             System.out.println(t.toString());
                             tasks.add(t);
                         }
-                        isFinished = false;
-                        i = readers.size();
+                        isFinished=false;
+                        i=readers.size();
                         break;
                     }
                     index++;
 
-                    if (isInteger(readers.get(index))) {
+                    if(isInteger(readers.get(index))) {
                         taskInfos.add(readers.get(index));
                         System.out.println("object was created");
-                        Task t = null;
-                        t = new Task(readers.get(index - 1), Double.parseDouble(readers.get(index)));
+                        Task t =null;
+                        t=new Task(readers.get(index-1),Double.parseDouble(readers.get(index)));
                         System.out.println(t.toString());
                         tasks.add(t);
 
 
-                    } else if (index != readers.size() - 1) {
-                        i = index;
-                        if (isInteger(readers.get(index + 1))) {
+                    }else if(index!=readers.size()-1){
+                        i=index;
+                        if(isInteger(readers.get(index+1))) {
                             break;
-                        } else {
-                            Task t = null;
-                            t = new Task(readers.get(index));
+                        }
+                        else {
+                            Task t=null;
+                            t=new Task(readers.get(index));
                             System.out.println(t.toString());
                             tasks.add(t);
                         }
@@ -264,6 +265,7 @@ public class Reader {
             }
         }
     }
+
     public static void controller(String[] array2) {
         int index_job = 0;
         int index_task = 0;
@@ -445,6 +447,7 @@ public class Reader {
         }
         controller(array2);
     }
+
     public static void stationReader(String filePath) {
         String[] array3;
         ArrayList<String> tempArray = new ArrayList<>();
@@ -607,12 +610,12 @@ public class Reader {
                 }
             }
         }
-        System.out.println("******************************************************");
+        System.out.println("");
         System.out.println("For each station was assigned each tasks , here is the station's last situations");
         for(Station s : stations) {
             s.printlist();
         }
-        System.out.println("******************************************************");
+        System.out.println("");
     }
 
     public  static void definespeed() {
@@ -670,7 +673,7 @@ public class Reader {
             }
             max=0;
         }
-        System.out.println("******************************************************");
+        System.out.println("");
     }
 
     public static void showSituation() {//fifo ise ilk olanı total_duration yapıyorum diğer türlü en kısa sürelisi total olacak
@@ -778,7 +781,7 @@ public class Reader {
                 }
             }
         }
-        System.out.println("******************************************************");
+        System.out.println("");
     }
 
     public static void totalDuration() {
@@ -842,5 +845,4 @@ public class Reader {
             }
         }
     }
-
 }
